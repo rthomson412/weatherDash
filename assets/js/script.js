@@ -56,4 +56,55 @@ var getCurrentWeather = function (city) {
   });
 };
 
+var displayCurrentWeather = function (city) {
+  currentWeatherEl.textContent = "";
+  var currentTime = city.dt * 1000;
+  var currentDate = new Date(currentTime);
+  var formattedDate = currentDate
+    .toLocaleString("en-US", { timeZoneName: "short" })
+    .split(",", 1);
+
+  var weatherCityEl = document.createElement("h2");
+  var weatherIcon = document.createElement("img");
+  weatherIcon.setAttribute(
+    "src",
+    "https://openweathermap.org/img/wn/" + city.weather[0].icon + ".png"
+  );
+  weatherCityEl.textContent = city.name + " " + formattedDate;
+
+  currentWeatherEl.appendChild(weatherCityEl);
+  weatherCityEl.appendChild(weatherIcon);
+
+  var temperatureEl = document.createElement("p");
+  temperatureEl.classList =
+    "list-item flex-row justify-space-between align-left";
+  temperatureEl.textContent = "Temperature: " + city.main.temp + "\u00B0F";
+
+  var humidityEl = document.createElement("p");
+  humidityEl.classList = "list-item flex-row justify-space-between align-left";
+  humidityEl.textContent = "Humidity: " + city.main.humidity + "%";
+
+  var windSpeedEl = document.createElement("p");
+  windSpeedEl.classList = "list-item flex-row justify-space-between align-left";
+  windSpeedEl.textContent = "Wind Speed: " + city.wind.speed + " mph";
+
+  currentWeatherEl.appendChild(temperatureEl);
+  currentWeatherEl.appendChild(humidityEl);
+  currentWeatherEl.appendChild(windSpeedEl);
+};
+
+var displayUVIndex = function (uvIndex) {
+  var uvIndexEl = document.createElement("p");
+  uvIndexEl.classList =
+    "list-item flex-row justify-space-between align-left uv-Index";
+  uvIndexEl.textContent = "UV Index: " + uvIndex.value;
+  if (uvIndex.value < 3) {
+    uvIndexEl.classList = "badge badge-success";
+  } else if (uvIndex.value < 7) {
+    uvIndexEl.classList = "badge badge-warning";
+  } else if (uvIndex.value < 25) {
+    uvIndexEl.classList = "badge badge-danger";
+  }
+  currentWeatherEl.appendChild(uvIndexEl);
+};
 
