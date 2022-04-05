@@ -20,3 +20,40 @@ var formSubmitHandler = function (event) {
     alert("Enter a valid city");
   }
 };
+
+var getCurrentWeather = function (city) {
+  var cityWeather =
+    "https://api.openweathermap.org/data/2.5/weather?&units=imperial&q=" +
+    city +
+    "&appid=" +
+    apiKey;
+
+  fetch(cityWeather).then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        displayCurrentWeather(data);
+        var cityLat = data.coord.lat;
+        var cityLon = data.coord.lon;
+
+        return fetch(
+          "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+            cityLat +
+            "&lon=" +
+            cityLon +
+            "&appid=" +
+            apiKey
+        )
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            displayUVIndex(response);
+          });
+      });
+    } else {
+      alert("Error: " + response.cod);
+    }
+  });
+};
+
+
