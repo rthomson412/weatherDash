@@ -169,3 +169,39 @@ var fiveDayForecast = function (city) {
     }
   });
 };
+
+var historySearch = function (event) {
+  var citySearch = event.target.textContent;
+
+  getCurrentWeather(citySearch);
+  fiveDayForecast(citySearch);
+};
+
+var storeCity = function (cityName) {
+  var cityBtn = document.createElement("btn");
+  cityBtn.textContent = cityName;
+  cityBtn.classList = "col-12 city-btn";
+
+  cityHistoryEl.appendChild(cityBtn);
+
+  searchHistory.push(cityName);
+
+  localStorage.setItem("cities", JSON.stringify(searchHistory));
+};
+
+var loadCity = function () {
+  storedSearches = JSON.parse(localStorage.getItem("cities"));
+
+  if (!storedSearches) {
+    storedSearches = [];
+  }
+
+  for (var i = 0; i < storedSearches.length; i++) {
+    storeCity(storedSearches[i]);
+  }
+};
+
+loadCity();
+
+cityHistoryEl.addEventListener("click", historySearch);
+citySearchEl.addEventListener("submit", formSubmitHandler);
