@@ -108,3 +108,64 @@ var displayUVIndex = function (uvIndex) {
   currentWeatherEl.appendChild(uvIndexEl);
 };
 
+var fiveDayForecast = function (city) {
+  forecastEl.textContent = "";
+
+  fetch(
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+      city +
+      "&units=imperial&appid=" +
+      apiKey
+  ).then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        var forecastArray = data.list;
+
+        var forecastTitleEl = document.createElement("h3");
+        forecastTitleEl.textContent = "5-Day Forecast";
+        forecastTitleEl.classList = "card forecast-container col-12";
+
+        forecastEl.appendChild(forecastTitleEl);
+
+        for (var i = 0; i < forecastArray.length; i += 8) {
+          var forecastCardEl = document.createElement("div");
+
+          forecastCardEl.classList =
+            "card-body col-lg-2 col-sm-12 forecast-card";
+
+          forecastEl.appendChild(forecastCardEl);
+
+          var dateEl = document.createElement("h4");
+          dateEl.classList = "forecast-date";
+
+          var forecastDate = forecastArray[i].dt_txt;
+
+          dateEl.textContent = forecastDate.split(" ", 1);
+
+          var iconEl = document.createElement("img");
+
+          iconEl.setAttribute(
+            "src",
+            "https://openweathermap.org/img/wn/" +
+              forecastArray[i].weather[0].icon +
+              ".png"
+          );
+
+          var tempEl = document.createElement("p");
+          tempEl.textContent =
+            "Temp: " + forecastArray[i].main.temp + "\u00B0F";
+
+          var humidityForecastEl = document.createElement("p");
+          humidityForecastEl.textContent =
+            "Humidity: " + forecastArray[i].main.humidity + "%";
+
+          forecastCardEl.appendChild(dateEl);
+          forecastCardEl.appendChild(iconEl);
+          forecastCardEl.appendChild(tempEl);
+          forecastCardEl.appendChild(humidityForecastEl);
+          forecastEl.appendChild(forecastCardEl);
+        }
+      });
+    }
+  });
+};
