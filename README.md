@@ -6,7 +6,7 @@
 
 ## Icons depict forecast at a glance.
 
-## Deployed website here 
+## Deployed website here: https://rthomson412.github.io/weatherDash/
 
 ![image](https://user-images.githubusercontent.com/96792780/162426311-f6ff18dd-565a-4b01-8384-ca54c1794166.png)
 
